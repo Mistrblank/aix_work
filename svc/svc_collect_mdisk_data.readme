@@ -1,0 +1,15 @@
+This script was created to collect long term storage utilization from our SVCs.
+
+Each SVC would need to be collected daily with a separate execution of this script.
+
+All output however was collected to one file, which I would then be able to
+manipulate in Excel as a delimited file.  Pivot tables allowed for easy generation
+of usage trends.
+
+Ultimately, this is another collection that had been running for years.
+
+If I were to update today, I would make it so the collection data was forwarded
+to a logstash instance and stored in ElasticSearch.
+
+In this version, the OUTDIR variable needs to be modified so that the the data 
+storage location is correct.

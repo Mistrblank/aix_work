@@ -1,0 +1,7 @@
+While this script isn't really AIX specific, it's where I used it mostly.
+
+It's sole purpose is to speed up the process of putting your public key on a
+remote host.  Generally I wanted this at my bastion host.
+
+I didn't need to use this very often after the first time it was used on all
+hosts.

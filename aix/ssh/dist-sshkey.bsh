@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## This is a script to easily distribute the ssh key to the specified host (or user@host) on the command line
+## Requires the second argument be the key to be distributed. 
+
+cat $1 | ssh -q $2 "umask 077; test -d ~/.ssh || mkdir ~/.ssh ; cat > $1; cat $1 >> ~/.ssh/authorized_keys"
+
+##Test the new key
+ssh -q $2 "echo \$(uname -n):$(date)"

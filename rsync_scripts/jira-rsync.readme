@@ -1,0 +1,10 @@
+This script is a very specific rsync script that I created to grab the data in
+our Linux based Jira installation and replicate it into our environment for
+backup purposes.
+
+The host and user name have been omitted to preserve security.
+
+This host was run on the backup server and pulled the data to itself where it
+was later picked up during it's normal backup routines.  I keep this script
+because of the rsync command mostly and so I can quickly generate the string
+of commands to keep two directories in sync.

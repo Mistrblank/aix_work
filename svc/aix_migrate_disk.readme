@@ -1,0 +1,9 @@
+This script was created to migrate an aix host from one SVC to another
+(Subsequently that's also why I'm not sure if it belongs here or under AIX
+scripts).
+
+This script is one of the more involved ones here and is also one that I used to
+focus on my Python skills.
+
+This script is still run from an external host that has ssh access to the source
+and target SVCs as well as the target host.  

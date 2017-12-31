@@ -1,0 +1,5 @@
+This script is intended to be run on the AIX host as root.
+
+Purpose: Capture storage information from host.
+     This script was established to determine actual storage utilization for
+     an entire host.

@@ -1,0 +1,9 @@
+With the SP environment disappearing, it was evident that the pcp functionality
+wasn't present in other hosts.  I wrote a simple parallel copy script in PERL
+in order mimic that functionality.
+
+This is horrendously out of date as of the writing of this, but still works.
+It also happens to work on Linux as well.
+
+If I hadn't found other copy mechanisms to work with, I would probably have
+rewritten this in Python.  Ansible is my preferred method today however. 

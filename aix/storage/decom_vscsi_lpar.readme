@@ -1,0 +1,10 @@
+This script was designed to handle building scripts to easily decommision "old"
+style hosts that were reliant upon vscsi backed storage.
+
+As we migrate away from Power6 we had a lot of hosts that were reliant upon it
+and there are many pitfalls to properly cleaning up all storage configurations.
+
+This script automatically generated all of the commands necessary to eliminate
+an lpar's profile and storage.  You still needed to execute the scripts (copy
+and paste) to follow through, but this script greatly simplified the work to
+collect all of the necessary information. 

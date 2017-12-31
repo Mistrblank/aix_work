@@ -1,0 +1,37 @@
+#!/usr/bin/bash
+
+##capture the hostname
+HOST=`hostname`
+
+##capture all vg based filesystems
+for VG in `lsvg -o`
+do
+  for LV in `lsvg -l $VG | grep -v "^hd5" | grep -v sysdump | grep -v paging | grep -v jfs2log | grep -v "^$VG:" | grep -v "^LV NAME" | awk '{print $1}'`
+  do
+    SIZE=`df -m /dev/$LV | grep -v Filesystem | awk '{print $2}'`
+    FSNAME=`df /dev/$LV | grep -v Filesystem | awk '{print $7}'`
+    #echo "|$HOST|$VG|$LV|$FSNAME|$SIZE|"
+    echo -e "|\t$HOST\t|\t$VG\t|\t$LV\t|\t$FSNAME\t|\t$SIZE\t|"
+  done
+done
+
+##paging space
+for PS in `lsps -a | grep -v "Page Space" | awk '{print $1}'`
+do
+  SIZE=`lsps -a | grep "^$PS" | awk '{print $4}'`
+  VG=`lsps -a | grep "^$PS" | awk '{print $3}'`
+  SIZE=${SIZE%MB}
+  #echo "|$HOST|$VG|$PS|paging|$SIZE|"
+  echo -e "|\t$HOST\t|\t$VG\t|\t$PS\t|\tpaging\t|\t$SIZE\t|"
+done
+
+##gpfs shared
+##Note: There is a requirement that gpfs be part of the device name for the shared filesystem
+
+for LV in `df | grep gpfs | awk '{print $7}'`
+do
+  SIZE=`df -m $LV | grep -v Filesystem | awk '{print $2}'`
+  FSNAME=`df $LV | grep -v Filesystem | awk '{print $7}'`
+  #echo "|$HOST|$VG|$LV|$FSNAME|$SIZE|"
+  echo -e "|\t$HOST\t|\tshared filesystem\t|\t$LV\t|\t$FSNAME\t|\t$SIZE\t|"
+done

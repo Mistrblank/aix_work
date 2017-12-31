@@ -1,0 +1,95 @@
+#!/usr/bin/perl
+
+############################################################
+#  File: pcp.pl
+#  Author: Vincent Johnson
+#  Last Revision : Mon Jan 12 10:56:01 EST 2004
+############################################################
+#
+# Description: Provides a rudimentary parallel copy function
+#
+# Usage:pcp [-w comma, separated,hostlist | -c collective file location] -s /source/file [-t /target/location]
+# 
+# if neither the -w or -c are specified, the program defaults to the WCOLL environmental variable
+# 
+# Revision (2005.08.02):
+# Added a -p functionality 
+############################################################
+
+if (@ARGV == 0) {
+	print_Usage();
+	exit(0);
+}
+%arghash = parse(@ARGV);
+%hosts = %{$arghash{'hosts'}};
+foreach (keys (%hosts)) {
+	print ("scp $arghash{'pval'} $arghash{'source'} $_:$arghash{'target'}\n");
+	system ("scp $arghash{'pval'} $arghash{'source'} $_:$arghash{'target'}");
+}
+exit 0;
+
+sub parse {
+	my (@wordlist) = @_;
+	my ($val, %returnhash, %hosthash);
+	$returnhash{'pval'} = "";
+	foreach $word (@wordlist) {
+		$val=$val." ".$word;
+	}
+	foreach $arg (split (/\s-/, $val)) {
+		$char = substr($arg, 0, 1);
+		if ("w" eq $char) {
+			foreach (split (/,/, substr($arg, 1))) { $hosthash{$_}="mapped"; }
+		} elsif ("p" eq $char) {
+			$returnhash{'pval'} = '-p';
+		} elsif ("c" eq $char) {
+			open (TMP, substr($arg, 1)) || die "Collective file specified could not be opened";
+			foreach (<TMP>) { 
+				chomp;
+				my ($host) = $_;
+				$host =~ s/#.*//;  ##Eliminate comments
+				if ($host ne "") { $hosthash{trim($host)}="mapped"; } 
+			}
+		} elsif ("t" eq $char) {
+			$returnhash{'target'} = trim(substr ($arg, 1));
+		} elsif ("s" eq $char) {
+			$returnhash{'source'} = trim(substr ($arg, 1));
+		} elsif ($char =~ /\S/) {
+			##In this case we have an unrecognized flag
+			print "\nUnrecognizable flag: -$char\n";
+			print_Usage();
+			exit(1);
+		}
+	}
+	if (keys (%hosthash) == 0) {
+		open (TMP, $ENV{'WCOLL'}) || die "Collective file (WCOLL) could not be opened";
+		foreach (<TMP>) { 
+			chomp;
+			my ($host) = $_;
+			$host =~ s/#.*//;  ##Eliminate comments
+			if ($host ne "") { $hosthash{trim($host)}="mapped"; } 
+		}
+	} 
+	if (!exists $returnhash{'source'}) {
+		print "-s Flag is necessary for execution";
+	} elsif (!exists $returnhash{'target'}) {
+		$returnhash{'target'} = $returnhash{'source'};
+	}
+	$returnhash{'hosts'} = \%hosthash;
+	return %returnhash;
+}
+
+sub print_Usage {
+	print "Usage:pcp [-w comma, separated,hostlist] [-c collective file location] -s /source/file [-t /target/location]\n";
+	print "\t-w is a user specified, comma separated host list\n";
+	print "\t-c is a user specified filename to a collective file.\n";
+	print "\tIf neither the -c or -w flag are included, pcp defaults to using the file specified by the WCOLL file.\n";
+	print "\t-s is the required for execution, it is the source file to be copied\n";
+	print "\t-t is an optional argument used to specify the target location for the file to be copied to.  If it is omitted, then the source location will be used for the target location but the full pathname to the file must be used with the -s flag.\n";
+}
+
+sub trim {
+	my ($trimstr) = @_;
+	$trimstr =~ s/^\s*//;
+	$trimstr =~ s/\s*$//;
+	return $trimstr;	
+}

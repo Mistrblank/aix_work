@@ -1,0 +1,12 @@
+This script is another attempt to automate batch work on the SAN fabric.
+
+What I learned is that I needed a method to create a large number of FabricOS
+commands that could be run unattended.   This script allowed me to collect them
+into one file and parse them one at a time in a large batch. It was my first
+attempt to use Paramiko for ssh connections within Python.
+
+Note, that at the time of writing this, I still need to code for username and
+password functionality.  I also wanted to avoid using command line passwords
+which is why it was hardcoded originally.  Eventually I should pull this information
+from user interaction, or possibly create an identity file that will be read at
+execution and can be eliminated later. 

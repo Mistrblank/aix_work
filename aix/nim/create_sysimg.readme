@@ -1,0 +1,24 @@
+I had become heavily invested in NIM as a system image disseminator, the biggest
+problem that I encountered was consistently having our gold image of the AIX
+media available at all sites.
+
+Distribution was manual before this existed. That was an awful process with a
+lot of waiting for files to copy and it was easy to lose track of what had
+been done.
+
+With the creation of this script, we could identify a primary nim server and
+an AIX host that we was attached to it that would house our image.
+
+When any updates were made to the system image, one execution of this script
+made sure all NIM servers had a copy of our current AIX image.  This would
+be a crucial step to making sure that new hosts could be built quickly with an
+environment that was as we expected it to be.
+
+Still, with this in place, it was becoming increasing apparent if we didn't
+move toward immutable infrastructure and automated configuration management
+server drift was still going to be an issue.
+
+Even acknowledging that, I would also like to create a series of management
+scripts to handle easy deletion of stored images, automatic cleanup of the
+NIM environment (it really is a sloppy implementation that just needs a lot of
+automated polish)

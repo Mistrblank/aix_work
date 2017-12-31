@@ -1,0 +1,6 @@
+This is a script that was used to pull memory information from AIX hosts when
+we were experiencing large memory management issues.
+
+This script is intended to be run as room on the host in question.
+
+We utilized dsh to pull information from large numbers of hosts. 

@@ -1,0 +1,8 @@
+This script was written for an old version of the svc_collect_mdisk_data script
+before I became familiar with the bytes flag to normalize all data collected.
+
+I had to run this to normalize all data that was already collected with the new
+format.
+
+This script isn't particularly useful other than for historical purposes and to
+show Parsing functionality in Perl. 
